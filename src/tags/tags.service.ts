@@ -16,7 +16,7 @@ export class TagsService {
   getId(id: string): Tag {
     const tag = this.tags.find((tag) => tag.id === id);
     if (!tag) {
-      throw new Error(`Tag with id ${id} not found`);
+      throw new Error('Tag no encontrado');
     }
     return tag;
   }
@@ -24,7 +24,7 @@ export class TagsService {
   // Insertar un nuevo tag (validación del UUID generado)
   insert(tagDto: TagDto): Tag {
     const tag: Tag = {
-      id: uuidv4(), // Genera un UUID v4 para el ID
+      id: uuidv4(),
       name: tagDto.name,
       description: tagDto.description,
       slug: tagDto.slug,
@@ -38,18 +38,7 @@ export class TagsService {
   update(id: string, tagDto: TagDto): Tag {
     const index = this.tags.findIndex((tag) => tag.id === id);
     if (index === -1) {
-      throw new Error(`Tag with id ${id} not found`);
-    }
-    const updatedTag = { ...this.tags[index], ...tagDto };
-    this.tags[index] = updatedTag;
-    return updatedTag;
-  }
-
-  // Actualizar parcialmente un tag
-  patch(id: string, tagDto: Partial<TagDto>): Tag {
-    const index = this.tags.findIndex((tag) => tag.id === id);
-    if (index === -1) {
-      throw new Error(`Tag with id ${id} not found`);
+      throw new Error('Tag no encontrado para actualizar');
     }
     const updatedTag = { ...this.tags[index], ...tagDto };
     this.tags[index] = updatedTag;
@@ -60,14 +49,27 @@ export class TagsService {
   delete(id: string): string {
     const index = this.tags.findIndex((tag) => tag.id === id);
     if (index === -1) {
-      throw new Error(`Tag with id ${id} not found`);
+      throw new Error('Tag no encontrado para eliminar');
     }
     this.tags.splice(index, 1);
-    return `Tag with id ${id} deleted`;
+    return `Tag con id ${id} eliminado con éxito`;
   }
 
   // Obtener todos los slugs generados
   getAllSlugs(): string[] {
     return this.tags.map((tag) => tag.slug);
   }
+
+  // Actualizar parcialmente un tag
+patch(id: string, tagDto: Partial<TagDto>): Tag {
+  const index = this.tags.findIndex((tag) => tag.id === id);
+  if (index === -1) {
+    throw new Error(`Tag con id ${id} no encontrado`);
+  }
+
+  const updatedTag = { ...this.tags[index], ...tagDto };
+  this.tags[index] = updatedTag;
+  return updatedTag;
+}
+
 }

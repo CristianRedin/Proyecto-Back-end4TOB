@@ -1,4 +1,4 @@
-import {Body,Controller,Delete,Get,Param,Patch,Post,Put,UsePipes,ValidationPipe,HttpException,HttpStatus,} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe, HttpException, HttpStatus, Patch } from '@nestjs/common';
 import { TagDto } from './dto/tag.dto/tag.dto';
 import { Tag } from './tag/tag.interface';
 import { TagsService } from './tags.service';
@@ -19,7 +19,7 @@ export class TagsController {
     try {
       return this.tagsService.getId(id);
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw new HttpException('Tag no encontrado', HttpStatus.NOT_FOUND);
     }
   }
 
@@ -28,7 +28,8 @@ export class TagsController {
   @UsePipes(new ValidationPipe())
   create(@Body() body: TagDto): Tag {
     try {
-      return this.tagsService.insert(body);
+      const newTag = this.tagsService.insert(body);
+      return newTag;
     } catch (error) {
       throw new HttpException('Error al crear el tag', HttpStatus.BAD_REQUEST);
     }
@@ -38,19 +39,10 @@ export class TagsController {
   @Put(':id')
   update(@Param('id') id: string, @Body() body: TagDto): Tag {
     try {
-      return this.tagsService.update(id, body);
+      const updatedTag = this.tagsService.update(id, body);
+      return updatedTag;
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
-    }
-  }
-
-  // Actualizar parcialmente un tag
-  @Patch(':id')
-  patch(@Param('id') id: string, @Body() body: Partial<TagDto>): Tag {
-    try {
-      return this.tagsService.patch(id, body);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw new HttpException('Tag no encontrado para actualizar', HttpStatus.NOT_FOUND);
     }
   }
 
@@ -58,9 +50,10 @@ export class TagsController {
   @Delete(':id')
   remove(@Param('id') id: string): string {
     try {
-      return this.tagsService.delete(id);
+      const message = this.tagsService.delete(id);
+      return message;
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw new HttpException('Tag no encontrado para eliminar', HttpStatus.NOT_FOUND);
     }
   }
 
@@ -69,4 +62,16 @@ export class TagsController {
   getSlugs(): string[] {
     return this.tagsService.getAllSlugs();
   }
+
+  // Actualizar parcialmente un tag
+@Patch(':id')
+patch(@Param('id') id: string, @Body() body: Partial<TagDto>): Tag {
+  try {
+    const updatedTag = this.tagsService.patch(id, body);
+    return updatedTag;
+  } catch (error) {
+    throw new HttpException('Tag no encontrado para actualización parcial', HttpStatus.NOT_FOUND);
+  }
+}
+
 }
