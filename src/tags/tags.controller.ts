@@ -74,4 +74,14 @@ patch(@Param('id') id: string, @Body() body: Partial<TagDto>): Tag {
   }
 }
 
+  // Obtener un tag por slug
+  @Get('slug/:slug')
+  findBySlug(@Param('slug') slug: string): Tag {
+    try {
+      return this.tagsService.getBySlug(slug);
+    } catch (error) {
+      throw new HttpException('Tag no encontrado', HttpStatus.NOT_FOUND);
+    }
+  }
+
 }

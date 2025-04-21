@@ -71,5 +71,16 @@ patch(id: string, tagDto: Partial<TagDto>): Tag {
   this.tags[index] = updatedTag;
   return updatedTag;
 }
+  
+    // Obtener un tag por slug
+    getBySlug(slug: string): Tag {
+      const tag = this.tags.find((tag) => tag.slug === slug);
+      if (!tag) {
+        throw new Error('Tag no encontrado');
+      }
+      return tag;
 
+
+
+}
 }
