@@ -1,28 +1,45 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './users.entity';
+import { users } from './users.entity';
 
 
 @Injectable()
 export class UsersService {
 
     constructor(
-        @InjectRepository(User) // Inyectamos el repositorio de User
-        private usersRepository: Repository<User>,) {} 
+        @InjectRepository(users) // Inyectamos el repositorio de User
+        private usersRepository: Repository<users>,) {} 
         
-        findAll(): Promise<User[]> {
+        findAll(): Promise<users[]> {
             return this.usersRepository.find(); // Devuelve todos los usuarios
         }
-         async findOne(id: number): Promise<User | null> {
-            const user= await this.usersRepository.findOneBy({id});
-       if(!user){
-        throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
-       }
-       return user; // Devuelve un usuario por su id  
+        async findOne(id: string): Promise<users> {
+            const user = await this.usersRepository.findOne({
+                where: { id },  // Busca el usuario por su ID (que ahora es un string)
+            });
+    
+            if (!user) {
+                throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+            }
+    
+            return user; // Devuelve el usuario si se encuentra
         }    
 
-        create(user: User): Promise<User> {
+        create(user: users): Promise<users> {
             return this.usersRepository.save(user); // Guarda un nuevo usuario
+        }
+
+        delete(id: string): Promise<void> {
+            return this.usersRepository.delete(id).then(() => {}); // Elimina un usuario por su ID
+        }
+        
+        update(id: string, user: Partial<users>): Promise<users> {
+            return this.usersRepository.save({ ...user, id }); // Actualiza un usuario por su ID
+            
+        }
+        
+        updatePartial(id: string, user: Partial<users>): Promise<users> {
+            return this.usersRepository.save({ ...user, id }); // Actualiza parcialmente un usuario por su ID
         }
 }
