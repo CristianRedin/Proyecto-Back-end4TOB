@@ -3,18 +3,19 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductsController } from './products/products.controller';
 import { CustomersController } from './customers/customers.controller';
-import { UsersController } from './controllers/users/users.controller';
+import { UsersController } from './users/users.controller';
 import { ProductsService } from './products/products.service';
 import { CustomersService } from './customers/customers.service';
 import { ProductsModule } from './products/products.module';
 import { TagsModule } from './tags/tags.module';
-import { Type } from 'class-transformer';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 
+  
+
+
 @Module({
-  imports: [ProductsModule, TagsModule,TypeOrmModule.forRoot({
+  imports: [ProductsModule,TypeOrmModule.forRoot({
     type: 'postgres',
     host: 'localhost',
     port: 5432,
