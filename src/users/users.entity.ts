@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { IsEmail, IsNotEmpty, IsString, IsDateString, IsInt, Min } from 'class-validator';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Product } from 'src/products/products.entity'; // Asegúrate de que la ruta sea correcta
+import { IsDateString, IsEmail, IsInt, IsNotEmpty, IsString, Min } from 'class-validator';
 
 @Entity()
 export class users {
@@ -32,4 +33,8 @@ export class users {
     @IsInt()  // Aseguramos que es un número entero
     @Min(10000000)  // Este es un ejemplo de un mínimo para la identificación (puedes ajustarlo según el caso)
     identification: number;
+
+    // Relación de uno a muchos (un usuario puede tener varios productos)
+    @OneToMany(() => Product, (product) => product.user)
+    products: Product[];
 }
