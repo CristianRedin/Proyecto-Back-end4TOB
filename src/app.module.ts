@@ -1,35 +1,33 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ProductsController } from './products/products.controller';
 import { CustomersController } from './customers/customers.controller';
-import { UsersController } from './users/users.controller';
-import { ProductsService } from './products/products.service';
 import { CustomersService } from './customers/customers.service';
-import { ProductsModule } from './products/products.module';
 import { TagsModule } from './tags/tags.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
-
-  
-
+import { ProductsModule } from './products/products.module';
 
 @Module({
-  imports: [ProductsModule,TypeOrmModule.forRoot({
-    type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username: 'postgres',
-    password: '12345',
-    database: 'nestdb',
-    entities: [],
-    retryDelay: 3000,
-    autoLoadEntities: true,
-    //Solo desarollo
-    synchronize: true,
-    logging: true,
-  }), UsersModule],
-  controllers: [AppController, ProductsController, CustomersController, UsersController],
-  providers: [AppService, ProductsService, CustomersService],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: '12345',
+      database: 'nestdb',
+      entities: [],
+      retryDelay: 3000,
+      autoLoadEntities: true,
+      synchronize: true,
+      logging: true,
+    }),
+    UsersModule,
+    TagsModule,
+    ProductsModule,
+  ],
+  controllers: [AppController, CustomersController],
+  providers: [AppService, CustomersService],
 })
 export class AppModule {}

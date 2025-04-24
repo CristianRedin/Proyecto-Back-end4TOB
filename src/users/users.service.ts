@@ -4,7 +4,8 @@ import { Repository } from 'typeorm';
 import { users } from './users.entity';
 
 
-@Injectable()
+@Injectable() // Decorador que indica que esta clase es un servicio
+// Este servicio se encargará de la lógica de negocio relacionada con los usuarios
 export class UsersService {
 
     constructor(

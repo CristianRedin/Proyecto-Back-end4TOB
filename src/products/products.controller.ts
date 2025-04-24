@@ -1,3 +1,4 @@
+
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { ProductsService } from '../products/products.service';
 import { Product } from './products.entity'; // Cambio a singular para coincidir con el nombre del archivo y la clase

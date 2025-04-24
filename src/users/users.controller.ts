@@ -31,6 +31,4 @@ export class UsersController {
     async partialUpdateUser(@Param('id') id: string, @Body() user: Partial<users>): Promise<users> {
         return this.usersService.update(id, user); // Llama al método update del servicio
 
-  }
-  
-}
+}}
