@@ -37,4 +37,4 @@ export class users {
     // Relación de uno a muchos (un usuario puede tener varios productos)
     @OneToMany(() => Product, (product) => product.user)
     products: Product[];
-}
+}6
