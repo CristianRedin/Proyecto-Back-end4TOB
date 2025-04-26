@@ -4,20 +4,18 @@
 
     @Entity()
     export class Size {
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column({ length: 50 })
-    @IsNotEmpty()
-    @IsString()
-    name: string;
-
-    
-    @Column({ type: 'int', default: 0 })
-    @IsNotEmpty()
-    @IsInt()
-    @IsPositive()
-    stock: number;
+        @PrimaryGeneratedColumn()
+        id: number;
+      
+        @Column({ length: 50 })
+        @IsNotEmpty()
+        @IsString()
+        name: string;  // Talla (S, M, L, 30, 32, etc.)
+      
+        @Column({ type: 'varchar', length: 2 })
+        @IsNotEmpty()
+        @IsString()
+        country_code: string;  // País (US, EC, etc.)
 
     // Relación de muchos a muchos con Product
     @ManyToMany(() => Product, (product) => product.sizes)
